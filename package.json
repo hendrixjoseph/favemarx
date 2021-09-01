@@ -1,0 +1,13 @@
+{
+    "name": "favemarx",
+    "version": "1.0.0",
+    "description": "favemarks - bookmark your favorites",
+    "author": "Joseph Hendrix",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js"
+    },
+    "dependencies": {
+      "express": "^4.16.1"
+    }
+  }
