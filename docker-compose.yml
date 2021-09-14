@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  favemarx:
+    build:
+      context: ./
+      dockerfile: nodejs.dockerfile
+    ports:
+      - 8080:8080
+    #environment:
+
+  favemarx_db:
+    build:
+      context: ./
+      dockerfile: mysql.dockerfile
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
