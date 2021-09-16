@@ -17,3 +17,6 @@ CREATE TABLE website (
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
+
+CREATE USER 'favemarx_web' IDENTIFIED WITH mysql_native_password BY 'password';
+GRANT SELECT, INSERT, UPDATE, DELETE ON favemarx.* TO favemarx_web;

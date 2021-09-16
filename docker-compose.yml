@@ -2,6 +2,8 @@ version: "3.7"
 
 services:
   favemarx:
+    depends_on:
+      - favemarx_db
     build:
       context: ./
       dockerfile: nodejs.dockerfile
