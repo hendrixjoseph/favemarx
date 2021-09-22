@@ -65,6 +65,8 @@ const cookieParser = require('cookie-parser')
 const session = require("express-session");
 const bodyParser = require('body-parser');
 
+app.set('view engine', 'pug');
+
 app.use(express.static('static'));
 app.use(cookieParser());
 app.use(bodyParser());
@@ -72,10 +74,9 @@ app.use(session({ secret: 'keyboard cat' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// App
 app.post('/login',
-  passport.authenticate('local', { successRedirect: '/bookmarks',
-                                   failureRedirect: '/login.html'
+  passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/'
                                  })
 );
 
@@ -87,20 +88,16 @@ const getWebsites = (user_id, callback) => {
     });
 };
 
-app.get('/bookmarks',
+app.get('/',
     (req, res) => {
+      console.log(req.user);
       if (req.user) {
         getWebsites(req.user.id, (err, result) => {
-          res.send(`your favemarx, ${req.user.name}: <ul>${result.map(r => `<li><a href='${r.url}'>${r.name}</a> on ${r.date.toLocaleDateString()}</li>`).join('')}</ul>`);
-        });
+          res.render('bookmarks', {username: req.user.name, websites: result});
+        });        
       } else {
-        res.sendStatus(404);
+        res.render('login');
       }
-});
-
-
-app.get('/', (req, res) => {
-  res.send('Hello World');
 });
 
 app.listen(PORT, HOST);

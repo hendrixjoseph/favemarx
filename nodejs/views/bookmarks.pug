@@ -1,0 +1,14 @@
+doctype html
+html(lang="en")
+  head
+    title favemarx - your favorite bookmarks
+    link(rel='stylesheet' href='style.css')
+  body
+    h1 Your Favemarx, 
+    table
+      tbody
+        each website in websites
+          tr
+            td
+              a(href=website.url)=website.name
+            td=website.date.toLocaleDateString()

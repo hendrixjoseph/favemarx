@@ -2,12 +2,9 @@ FROM node:14
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY nodejs ./
 
 RUN npm install
-
-COPY *.js ./
-COPY static static
 
 EXPOSE 8080
 CMD [ "node", "index.js" ]
