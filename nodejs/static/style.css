@@ -29,3 +29,12 @@ tbody tr:nth-of-type(odd) {
 tbody tr:hover {
     background-color: gray;
 }
+
+form {
+  width: fit-content;
+}
+
+label, input {
+  width: 15rem;
+  display: inline-block;
+}

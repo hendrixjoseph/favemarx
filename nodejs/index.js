@@ -80,9 +80,44 @@ app.post('/login',
                                  })
 );
 
+app.post('/add',
+  (req, res) => {
+    if (req.user) {
+      pool.getConnection((err, connection) => {
+        connection.query('INSERT INTO website (user_id, name, url) VALUES (?, ?, ?)', 
+                        [req.user.id, req.body.name, req.body.url],
+                        (err, result) => {
+                          console.log(result);
+                          if (req.body.undo) {
+                            res.status(201).json({id: result.insertId}).send();
+                          } else {
+                            res.status(201).redirect('/');
+                          }
+                        });
+        });
+    } else {
+      res.sendStatus(401);
+    }
+  }
+)
+
+app.delete('/delete',
+  (req, res) => {
+    if (req.user) {
+      pool.getConnection((err, connection) => {
+        connection.query('DELETE FROM website WHERE user_id=? AND id=?', 
+                        [req.user.id, req.body.id],
+                        (err, result) => {res.sendStatus(200);});
+        });
+    } else {
+      res.sendStatus(401);
+    }
+  }
+)
+
 const getWebsites = (user_id, callback) => {
   pool.getConnection((err, connection) => {
-    connection.query("SELECT name, url, date FROM website WHERE user_id = ? ORDER BY date", 
+    connection.query("SELECT id, name, url, date FROM website WHERE user_id = ? ORDER BY date", 
                     [user_id],
                     callback);
     });
@@ -90,7 +125,6 @@ const getWebsites = (user_id, callback) => {
 
 app.get('/',
     (req, res) => {
-      console.log(req.user);
       if (req.user) {
         getWebsites(req.user.id, (err, result) => {
           res.render('bookmarks', {username: req.user.name, websites: result});
