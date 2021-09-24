@@ -16,9 +16,9 @@ const hideEdit = (button, hidden) => {
 }
 
 const hideButton = (button, toHide, toShow) => {
-  if (toHide.includes(button.className)) {
+  if (toHide.includes(button.title)) {
     button.hidden = true;
-  } else if (toShow.includes(button.className)) {
+  } else if (toShow.includes(button.title)) {
     button.hidden = false;
   }
 }
@@ -35,55 +35,94 @@ const hideButtons = (button, toHide, toShow) => {
   }
 }
 
-const deleteBookmark = button => {
-    fetch('/delete', {
-      'headers': {
-        'content-type': 'application/x-www-form-urlencoded',
-      },
-      'body': 'id='+button.value,
-      'method': 'DELETE',
-    }).then(result => {
-      button.hidden = true;
-      button.nextSibling.hidden = false;
-      button.nextSibling.nextSibling.disabled = true;
-    });
-  }
-  
-  const undoDeleteBookmark = button => {
-    // button -> td -> td -> a
-    let a = button.parentElement.nextSibling.childNodes.item(0);
-    let url = encodeURIComponent(a.href);
-    let name = encodeURIComponent(a.innerText);
-  
-    fetch('/add', {
-      'headers': {
-          'content-type': 'application/x-www-form-urlencoded',
-      },
-      'body': 'undo=true&name='+name+'&url='+url,
-      'method': 'POST',
-    }).then(response => {    
-      response.json().then(data => {
-        console.log(data);
-        button.previousSibling.value = data.id;
-      });
-  
-      button.hidden = true;
-      button.previousSibling.hidden = false;
-      button.nextSibling.disabled = false;
-    });
-  }
+const getOriginalData = button => {
+  // button -> td -> td -> a
+  let a = button.parentElement.nextSibling.childNodes.item(0);
 
-editBookmark = button => {
+  return {name: a.innerText, url: a.href};
+}
+
+const updateDate = button => {
+  button.parentElement.nextSibling.nextSibling.textContent = new Date().toLocaleDateString();
+}
+
+const getInputFields = button => {
+  let nameInput = button.parentElement.nextSibling.childNodes.item(1);
+  let urlInput = button.parentElement.nextSibling.childNodes.item(2);
+
+  return {nameInput: nameInput, urlInput: urlInput};
+}
+
+const deleteBookmark = button => {
+  fetch('/delete', {
+    'headers': {
+      'content-type': 'application/x-www-form-urlencoded',
+    },
+    'body': 'id=' + button.parentElement.getAttribute('value'),
+    'method': 'DELETE'
+  }).then(result => {
+    button.hidden = true;
+    button.nextSibling.hidden = false;
+    button.nextSibling.nextSibling.disabled = true;
+  });
+}
+
+const undoDeleteBookmark = button => {
+  let data = getOriginalData(button);
+  let url = encodeURIComponent(data.url);
+  let name = encodeURIComponent(data.name);
+
+  fetch('/add', {
+    'headers': {
+      'content-type': 'application/x-www-form-urlencoded',
+    },
+    'body': 'undo=true&name='+name+'&url='+url,
+    'method': 'POST',
+  }).then(response => {
+    response.json().then(data => {
+      button.parentElement.setAttribute('value',data.id);
+    });
+
+    button.hidden = true;
+    button.previousSibling.hidden = false;
+    button.nextSibling.disabled = false;
+
+    updateDate(button);
+  });
+}
+
+const editBookmark = button => {
   hideButtons(button, ['delete', 'edit'], ['save','cancel']);
   hideEdit(button, false);
 }
 
-saveEditBookmark = button => {
-  hideButtons(button, ['save', 'cancel'], ['delete','edit']);
-  hideEdit(button, true);
+const saveEditBookmark = button => {
+  let inputs = getInputFields(button);
+
+  let id = button.parentElement.getAttribute('value');
+  let url = encodeURIComponent(inputs.urlInput.value);
+  let name = encodeURIComponent(inputs.nameInput.value);
+
+  fetch('/update', {
+    'headers': {
+      'content-type': 'application/x-www-form-urlencoded',
+    },
+    'body': 'id='+id+'&name='+name+'&url='+url,
+    'method': 'POST',
+  }).then(response => {
+    updateDate(button);
+    hideButtons(button, ['save', 'cancel'], ['delete','edit']);
+    hideEdit(button, true);
+  });
 }
 
-cancelEditBookmark = button => {
+const cancelEditBookmark = button => {
+  let data = getOriginalData(button);
+  let inputs = getInputFields(button);
+
+  inputs.nameInput.value = data.name;
+  inputs.urlInput.value = data.url;
+
   hideButtons(button, ['save', 'cancel'], ['delete','edit']);
   hideEdit(button, true);
 }

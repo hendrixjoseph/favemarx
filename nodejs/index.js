@@ -8,10 +8,10 @@ const mysql = require('mysql');
 
 const pool = mysql.createPool({
   connectionLimit : 100,
-  host: "favemarx_db",
-  user: "favemarx_web",
-  password: "password",
-  database: "favemarx"
+  host: 'favemarx_db',
+  user: 'favemarx_web',
+  password: 'password',
+  database: 'favemarx'
 });
 
 // Constants
@@ -21,21 +21,20 @@ const HOST = '0.0.0.0';
 // Configure passport
 passport.use(new LocalStrategy(
   (username, password, done) => {
-    console.log(username);
-
     pool.getConnection((err, connection) => {
       if (err) {
         throw err;
       }
 
-      connection.query("SELECT id, password_hash FROM user WHERE email = ?", [username], (err2, result) => {
+      connection.query('SELECT id, password_hash, verified FROM user WHERE email = ?', [username], (err2, result) => {
         if (err2) {
           throw err2
         }
 
-        if(result.length === 1) {
+        if(result.length === 1 && result[0].verified) {
           bcrypt.compare(password, result[0].password_hash, (err, found) => {
             if(found) {
+              connection.query('UPDATE user SET last_login_date = CURRENT_TIMESTAMP WHERE id = ?', [result[0].id]);
               return done(null, {name: username, id: result[0].id});
             } else {
               // bad password
@@ -43,7 +42,7 @@ passport.use(new LocalStrategy(
             }
           });
         } else {
-          // no user found
+          // no user found or user not verified
           return done(null, false);
         }
       });
@@ -62,7 +61,7 @@ passport.deserializeUser((user, done) => {
 const app = express();
 
 const cookieParser = require('cookie-parser')
-const session = require("express-session");
+const session = require('express-session');
 const bodyParser = require('body-parser');
 
 app.set('view engine', 'pug');
@@ -80,58 +79,122 @@ app.post('/login',
                                  })
 );
 
-app.post('/add',
+app.get('/logout',
   (req, res) => {
-    if (req.user) {
-      pool.getConnection((err, connection) => {
-        connection.query('INSERT INTO website (user_id, name, url) VALUES (?, ?, ?)', 
-                        [req.user.id, req.body.name, req.body.url],
-                        (err, result) => {
-                          console.log(result);
-                          if (req.body.undo) {
-                            res.status(201).json({id: result.insertId}).send();
-                          } else {
-                            res.status(201).redirect('/');
-                          }
-                        });
-        });
-    } else {
-      res.sendStatus(401);
-    }
-  }
-)
+    req.logout();
+    res.redirect('/');
+});
 
-app.delete('/delete',
-  (req, res) => {
-    if (req.user) {
+app.post('/register', (req, res) => {
+  if (req.body.user !== null
+    && req.body.password !== null
+    && req.body.password === req.body.verifyPassword) {
+    bcrypt.hash(req.body.password, 10, function(err, hash) {
       pool.getConnection((err, connection) => {
-        connection.query('DELETE FROM website WHERE user_id=? AND id=?', 
-                        [req.user.id, req.body.id],
-                        (err, result) => {res.sendStatus(200);});
-        });
-    } else {
-      res.sendStatus(401);
-    }
-  }
-)
-
-const getWebsites = (user_id, callback) => {
-  pool.getConnection((err, connection) => {
-    connection.query("SELECT id, name, url, date FROM website WHERE user_id = ? ORDER BY date", 
-                    [user_id],
-                    callback);
+        connection.query(
+          'INSERT INTO user (email, password_hash) VALUES (?, ?)', 
+          [req.body.username, hash],
+          (err, result) => {
+            res.status(201).redirect('/');
+          }
+        );
+      });
     });
-};
+  } else {
+    res.statusCode(401).redirect('/');
+  }
+});
 
-app.get('/',
-    (req, res) => {
-      if (req.user) {
-        getWebsites(req.user.id, (err, result) => {
-          res.render('bookmarks', {username: req.user.name, websites: result});
-        });        
-      } else {
-        res.render('login');
+// http://localhost:8080/verify/hendrixjoseph%40aol.com/%242b%2410%24Wj7S0prcvASejsONI%2FnpHOpSfHRAheguMd4rM9BtnuaA8nKmve8R2
+app.get('/verify/:email/:hash', (req, res) => {
+  pool.getConnection((err, connection) => {
+    connection.query(
+      'SELECT * FROM user WHERE email = ?',
+      [req.params.email],
+      (err, result) => {
+        if (result.length === 1) {
+          let json = JSON.stringify(result[0]);
+          bcrypt.compare(json, req.params.hash, (err, found) => {
+            if (found) {
+              connection.query(
+                'UPDATE user SET verified = true WHERE email = ?', 
+                [req.params.email],
+                (err, result) => {
+                  res.redirect('/');
+                }
+              );
+            } else {
+              res.send('Bad verification link.');
+            }
+          });
+        } else {
+          res.send('Bad verification link.');
+        }
       }
+    );
+  });
+});
+
+app.post('/add', (req, res) => {
+  if (req.user) {
+    pool.getConnection((err, connection) => {
+      connection.query(
+        'INSERT INTO website (user_id, name, url) VALUES (?, ?, ?)', 
+        [req.user.id, req.body.name, req.body.url],
+        (err, result) => {
+          if (req.body.undo) {
+            res.status(201).json({id: result.insertId}).send();
+          } else {
+            res.status(201).redirect('/');
+          }
+        }
+      );
+    });
+  } else {
+    res.sendStatus(401);
+  }
+});
+
+app.post('/update', (req, res) => {
+  if (req.user) {
+    pool.getConnection((err, connection) => {
+      connection.query(
+        'UPDATE website SET name = ?, url = ? WHERE id = ? AND user_id = ?', 
+        [req.body.name, req.body.url, req.body.id, req.user.id],
+        (err, result) => { res.sendStatus(200) });
+    });
+  } else {
+    res.sendStatus(401);
+  }
+});
+
+app.delete('/delete', (req, res) => {
+  if (req.user) {
+    pool.getConnection((err, connection) => {
+      connection.query(
+        'DELETE FROM website WHERE user_id=? AND id=?', 
+        [req.user.id, req.body.id],
+        (err, result) => {res.sendStatus(200);});
+    });
+  } else {
+    res.sendStatus(401);
+  }
+});
+
+app.get('/', (req, res) => {
+  if (req.user) {
+    pool.getConnection((err, connection) => {
+      connection.query(
+        'SELECT id, name, url, date FROM website WHERE user_id = ? ORDER BY date', 
+        [req.user.id],
+        (err, result) => {
+          res.render('bookmarks', {username: req.user.name, websites: result});
+        }
+      );
+    });
+  } else {
+    res.render('login');
+  }
 });
 
 app.listen(PORT, HOST);

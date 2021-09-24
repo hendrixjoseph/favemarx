@@ -1,21 +1,24 @@
 doctype html
 html(lang="en")
   head
-    title favemarx - your favorite bookmarks
+    title Favemarx - Your Favorite Bookmarks
     script(src="bookmarks.js") 
-    link(rel='stylesheet' href='style.css')
+    link(rel='stylesheet' href='bookmarks.css')
   body
-    h1 Your Favemarx, 
+    h1 Your Favemarx
+    div='Account Name: ' + username
+    div
+     a(href='/logout') Logout
     table
       tbody
         each website in websites
           tr
-            td
-              button(class='delete' onclick='deleteBookmark(this)' value=website.id) &#10060;
-              button(class='undo' hidden onclick='undoDeleteBookmark(this)') &#x21a9;&#xfe0f;
-              button(class='edit' onclick='editBookmark(this)') &#x1f58a;&#xfe0f;
-              button(class='save' hidden onclick='saveEditBookmark(this)') &#x1f44d;
-              button(class='cancel' hidden onclick='cancelEditBookmark(this)') &#x1f44e;
+            td(value=website.id)
+              button(title='delete' onclick='deleteBookmark(this)') &#10060;
+              button(title='undo' hidden onclick='undoDeleteBookmark(this)') &#x21a9;&#xfe0f;
+              button(title='edit' onclick='editBookmark(this)') &#x1f58a;&#xfe0f;
+              button(title='save' hidden onclick='saveEditBookmark(this)') &#x1f44d;
+              button(title='cancel' hidden onclick='cancelEditBookmark(this)') &#x1f44e;
             td
               a(href=website.url)=website.name
               input(hidden type="hidden" name="name" value=website.name)
