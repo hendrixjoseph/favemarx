@@ -1,5 +1,7 @@
 'use strict';
 
+const salt = 'favemarx';
+
 const express = require('express');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -31,8 +33,9 @@ passport.use(new LocalStrategy(
           throw err2
         }
 
+        console.log(username + password + salt);
         if(result.length === 1 && result[0].verified) {
-          bcrypt.compare(password, result[0].password_hash, (err, found) => {
+          bcrypt.compare(username + password + salt, result[0].password_hash, (err, found) => {
             if(found) {
               connection.query('UPDATE user SET last_login_date = CURRENT_TIMESTAMP WHERE id = ?', [result[0].id]);
               return done(null, {name: username, id: result[0].id});
@@ -89,7 +92,8 @@ app.post('/register', (req, res) => {
   if (req.body.user !== null
     && req.body.password !== null
     && req.body.password === req.body.verifyPassword) {
-    bcrypt.hash(req.body.password, 10, function(err, hash) {
+    console.log(req.body.username + req.body.password + salt);
+    bcrypt.hash(req.body.username + req.body.password + salt, 10, function(err, hash) {
       pool.getConnection((err, connection) => {
         connection.query(
           'INSERT INTO user (email, password_hash) VALUES (?, ?)', 
@@ -105,7 +109,6 @@ app.post('/register', (req, res) => {
   }
 });
 
-// http://localhost:8080/verify/hendrixjoseph%40aol.com/%242b%2410%24Wj7S0prcvASejsONI%2FnpHOpSfHRAheguMd4rM9BtnuaA8nKmve8R2
 app.get('/verify/:email/:hash', (req, res) => {
   pool.getConnection((err, connection) => {
     connection.query(
@@ -195,6 +198,24 @@ app.get('/', (req, res) => {
   } else {
     res.render('login');
   }
+});
+
+app.get('/verificationLink/:email', (req, res) => {
+  pool.getConnection((err, connection) => {
+    connection.query(
+      'SELECT * FROM user WHERE email = ?',
+      [req.params.email],
+      (err, result) => {
+        let json = JSON.stringify(result[0]);
+        bcrypt.hash(json, 10, function(err, hash) {
+          let encodedEmail = encodeURIComponent(req.params.email);
+          let encodedHash = encodeURIComponent(hash);
+          let link = '/verify/'+encodedEmail+'/'+encodedHash;
+          res.send('<a href="'+link+'">'+link+'</a>');
+        });
+      }
+    )
+  });
 });
 
 app.listen(PORT, HOST);
