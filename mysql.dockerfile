@@ -1,6 +1,6 @@
 FROM mysql
 
-COPY ./*.sql /docker-entrypoint-initdb.d
+COPY ./*.sql /docker-entrypoint-initdb.d/
 
 EXPOSE 3306
 # docker build . -f mysql.dockerfile -t joehx/favemarx_db

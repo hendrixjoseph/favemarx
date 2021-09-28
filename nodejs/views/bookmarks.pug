@@ -8,7 +8,7 @@ html(lang="en")
     h1 Your Favemarx
     div='Account Name: ' + username
     div
-     a(href='/logout') Logout
+      a(href='/logout') Logout
     table
       tbody
         each website in websites
@@ -25,11 +25,8 @@ html(lang="en")
               input(hidden type="hidden" name="url" value=website.url)
             td=website.date.toLocaleDateString()
     form(action="/add" method="post")
-      div
-        label Site name:
+      label Site name:
         input(type="text" name="name")
-      div
-        label URL:
+      label URL:
         input(type="url" name="url")
-      div(style="text-align: right;")
-        input(type="submit" value="Add Favemarx")
+      input(type="submit" value="Add Favemarx")
