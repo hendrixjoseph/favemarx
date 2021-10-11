@@ -6,9 +6,10 @@ html(lang="en")
     link(rel='stylesheet' href='bookmarks.css')
   body
     h1 Your Favemarx
-    div='Account Name: ' + username
-    div
-      a(href='/logout') Logout
+    header
+      div='Account Name: ' + username
+      div
+        a(href='/logout') Logout
     table
       tbody
         each website in websites
@@ -21,8 +22,8 @@ html(lang="en")
               button(title='cancel' hidden onclick='cancelEditBookmark(this)') &#x1f44e;
             td
               a(href=website.url)=website.name
-              input(hidden type="hidden" name="name" value=website.name)
-              input(hidden type="hidden" name="url" value=website.url)
+              input(type="hidden" name="name" value=website.name)
+              input(type="hidden" name="url" value=website.url)
             td=website.date.toLocaleDateString()
     form(action="/add" method="post")
       label Site name:

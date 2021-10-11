@@ -4,12 +4,15 @@ body {
 }
 
 h1 {
-  font-size: 3em;
+  font-size: 4rem;
   text-align: center;
+  margin-bottom: 0;
 }
 
-div {
+header {
   text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
 }
 
 table {
@@ -18,14 +21,16 @@ table {
   width: 100%;
 }
 
-tr {
-  height: 2rem;
-  vertical-align: top;
+td {
+  padding: 0.5rem 1rem;
 }
 
-td {
-  padding: 0 1rem;
-  max-width: 5rem;
+td:nth-child(1) {
+  width: 70px;
+}
+
+td:nth-child(3) {
+  width: 150px;
 }
 
 tbody tr:nth-of-type(even) {
@@ -40,20 +45,23 @@ tbody tr:hover {
   background-color: gray;
 }
 
-form {
-  width: fit-content;
+input {
+  background: #eaeaea;
+  border: 1px solid #d4d4d4;
+  border-radius: 4px;
 }
 
-label, input {
+form {
+  width: fit-content;
+  padding: 0.5rem 1rem;
+}
+
+form label, form input {
   display: block;
 }
 
-label input {
-    background: #eaeaea;
-    border: 1px solid #d4d4d4;
-    border-radius: 4px;
-}
-
-input {
+form input {
   float: right;
+  margin-left: 5px;
+  margin-top: 5px;
 }

@@ -33,7 +33,6 @@ passport.use(new LocalStrategy(
           throw err2
         }
 
-        console.log(username + password + salt);
         if(result.length === 1 && result[0].verified) {
           bcrypt.compare(username + password + salt, result[0].password_hash, (err, found) => {
             if(found) {
@@ -92,7 +91,6 @@ app.post('/register', (req, res) => {
   if (req.body.user !== null
     && req.body.password !== null
     && req.body.password === req.body.verifyPassword) {
-    console.log(req.body.username + req.body.password + salt);
     bcrypt.hash(req.body.username + req.body.password + salt, 10, function(err, hash) {
       pool.getConnection((err, connection) => {
         connection.query(
