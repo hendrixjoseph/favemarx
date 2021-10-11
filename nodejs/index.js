@@ -77,7 +77,7 @@ app.use(passport.session());
 
 app.post('/login',
   passport.authenticate('local', { successRedirect: '/',
-                                   failureRedirect: '/'
+                                   failureRedirect: '/login-failed'
                                  })
 );
 
@@ -196,6 +196,10 @@ app.get('/', (req, res) => {
   } else {
     res.render('login');
   }
+});
+
+app.get('/login-failed', (req, res) => {
+  res.render('login', {loginFailed: true});
 });
 
 app.get('/verificationLink/:email', (req, res) => {

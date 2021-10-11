@@ -54,3 +54,9 @@ input[type="submit"] {
   margin-right: 1.5rem;
   width: 25%;
 }
+
+.login-failed {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+}
