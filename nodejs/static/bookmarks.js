@@ -1,8 +1,22 @@
+const getLinkTag = button => {
+  // button -> td -> td -> a
+  return button.parentElement.nextSibling.childNodes.item(0);
+}
+
+const getNameInput = button => {
+  // button -> td -> td -> input
+  return button.parentElement.nextSibling.childNodes.item(1);
+}
+
+const getUrlInput = button => {
+  // button -> td -> td -> input
+  return button.parentElement.nextSibling.childNodes.item(2);
+}
+
 const hideEdit = (button, hidden) => {
-  // button -> td -> td -> a, input, input
-  let a = button.parentElement.nextSibling.childNodes.item(0);
-  let nameInput = button.parentElement.nextSibling.childNodes.item(1);
-  let urlInput = button.parentElement.nextSibling.childNodes.item(2);
+  let a = getLinkTag(button);
+  let nameInput = getNameInput(button);
+  let urlInput = getUrlInput(button);
 
   a.hidden = !hidden;
 
@@ -37,7 +51,7 @@ const hideButtons = (button, toHide, toShow) => {
 
 const getOriginalData = button => {
   // button -> td -> td -> a
-  let a = button.parentElement.nextSibling.childNodes.item(0);
+  let a = getLinkTag(button);
 
   return {name: a.innerText, url: a.href};
 }
@@ -47,8 +61,8 @@ const updateDate = button => {
 }
 
 const getInputFields = button => {
-  let nameInput = button.parentElement.nextSibling.childNodes.item(1);
-  let urlInput = button.parentElement.nextSibling.childNodes.item(2);
+  let nameInput = getNameInput(button);
+  let urlInput = getUrlInput(button);
 
   return {nameInput: nameInput, urlInput: urlInput};
 }
@@ -111,6 +125,12 @@ const saveEditBookmark = button => {
     'method': 'POST',
   }).then(response => {
     updateDate(button);
+
+    let a = getLinkTag(button);
+
+    a.href = inputs.urlInput.value;
+    a.innerText = inputs.nameInput.value;
+
     hideButtons(button, ['save', 'cancel'], ['delete','edit']);
     hideEdit(button, true);
   });
