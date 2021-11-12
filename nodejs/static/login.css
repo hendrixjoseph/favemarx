@@ -28,8 +28,16 @@ h1, h2 {
   text-align: center;
 }
 
-div {
+main {
   width: 50rem;
+}
+
+footer {
+  text-align: center;
+}
+
+a {
+  margin: 0 1rem;
 }
 
 label {

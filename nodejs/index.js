@@ -202,6 +202,59 @@ app.get('/login-failed', (req, res) => {
   res.render('login', {loginFailed: true});
 });
 
+app.get('/register', (req, res) => {
+  res.render('register'); 
+});
+
+let sendVerificationEmail = (email, hash) => {
+  let encodedEmail = encodeURIComponent(email);
+  let encodedHash = encodeURIComponent(hash);
+  let link = 'http://localhost:3000/verify/'+encodedEmail+'/'+encodedHash;
+  let tag = '<a href="'+link+'">'+link+'</a>';
+   
+  let AWS = require('aws-sdk');
+
+  const SES_CONFIG = {
+    accessKeyId: '',
+    secretAccessKey: '',
+    region: '',
+  };
+  AWS.config.update(SES_CONFIG);
+
+  let params = {
+    Destination: {
+      ToAddresses: [email]
+    },
+    Message: {
+      Body: {
+        Html: {
+          Charset: "UTF-8",
+          Data: '<html><body>'+tag+'</body></html>'
+        },
+        Text: {
+          Charset: "UTF-8",
+          Data: link
+        },
+      },
+      Subject: {
+        Charset: "UTF-8",
+        Data: 'Verify your account'
+      }
+    },
+    Source: 'verfiy@favemarx.com'
+  };
+
+  let sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+
+  sendPromise.then(
+    (data) => {
+      console.log(data.MessageId);
+    }).catch(
+    (err) => {
+      console.error(err, err.stack);
+    });
+}
+
 app.get('/verificationLink/:email', (req, res) => {
   pool.getConnection((err, connection) => {
     connection.query(
@@ -213,7 +266,9 @@ app.get('/verificationLink/:email', (req, res) => {
           let encodedEmail = encodeURIComponent(req.params.email);
           let encodedHash = encodeURIComponent(hash);
           let link = '/verify/'+encodedEmail+'/'+encodedHash;
-          res.send('<a href="'+link+'">'+link+'</a>');
+          let tag = '<a href="'+link+'">'+link+'</a>';
+          sendVerificationEmail(req.params.email, hash);
+          res.send(tag);
         });
       }
     )
