@@ -1,3 +1,5 @@
 /nodejs/node_modules/
 /*.pem
 /*.ppk
+/nodejs/aws-creds.json
+/nodejs/package-lock.json

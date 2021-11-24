@@ -214,12 +214,7 @@ let sendVerificationEmail = (email, hash) => {
    
   let AWS = require('aws-sdk');
 
-  const SES_CONFIG = {
-    accessKeyId: '',
-    secretAccessKey: '',
-    region: '',
-  };
-  AWS.config.update(SES_CONFIG);
+  AWS.config.loadFromPath('./aws-creds.json');
 
   let params = {
     Destination: {
