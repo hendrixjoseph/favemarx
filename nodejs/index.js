@@ -3,6 +3,8 @@
 const salt = 'favemarx';
 
 const express = require('express');
+const https = require('https');
+const fs = require("fs");
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
@@ -270,5 +272,11 @@ app.get('/verificationLink/:email', (req, res) => {
   });
 });
 
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
+https.createServer({
+    key: fs.readFileSync("key.pem"),
+    cert: fs.readFileSync("cert.pem"),
+  },
+  app
+).listen(PORT, () => {
+    console.log(`Running on https://localhost:${PORT}`);
+});
