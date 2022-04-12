@@ -19,7 +19,7 @@ const pool = mysql.createPool({
 });
 
 // Constants
-const PORT = 8080;
+const PORT = 8443;
 const HOST = '0.0.0.0';
 
 // Configure passport
@@ -280,3 +280,12 @@ https.createServer({
 ).listen(PORT, () => {
     console.log(`Running on https://localhost:${PORT}`);
 });
+
+// redirect http to https
+let http = express();
+
+http.get('*', (req, res) =>{
+  res.redirect('https://' + req.headers.host + req.url);
+});
+
+http.listen(8080);
