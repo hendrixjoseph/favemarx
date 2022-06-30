@@ -3,3 +3,4 @@
 /*.ppk
 /nodejs/aws-creds.json
 /nodejs/package-lock.json
+/nodejs/greenlock.d/config.json.bak
