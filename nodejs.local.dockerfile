@@ -15,5 +15,5 @@ EXPOSE 80 443
 
 CMD [ "node", "local.js" ]
 
-# docker build . -f nodejs.dockerfile -t joehx/favemarx
-# docker run -p 8080:8080 -d joehx/favemarx
+# docker build . -f nodejs.local.dockerfile -t joehx/favemarx
+# docker run -p 80:80 -p 443:443 -d joehx/favemarx

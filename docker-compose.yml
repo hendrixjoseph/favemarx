@@ -1,16 +1,25 @@
 version: "3.7"
 
 services:
-  favemarx:
+  favemarx_local:
     depends_on:
       - favemarx_db
     build:
       context: ./
-      dockerfile: nodejs.dockerfile
+      dockerfile: nodejs.local.dockerfile
     ports:
       - 80:80
       - 443:443
-    #environment:
+
+  favemarx_prod:
+    depends_on:
+      - favemarx_db
+    build:
+      context: ./
+      dockerfile: nodejs.prod.dockerfile
+    ports:
+      - 80:80
+      - 443:443
 
   favemarx_db:
     build:
