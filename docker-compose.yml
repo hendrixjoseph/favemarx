@@ -8,8 +8,8 @@ services:
       context: ./
       dockerfile: nodejs.dockerfile
     ports:
-      - 80:8080
-      - 443:8443
+      - 80:80
+      - 443:443
     #environment:
 
   favemarx_db:

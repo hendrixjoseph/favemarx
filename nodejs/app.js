@@ -3,8 +3,6 @@
 const salt = 'favemarx';
 
 const express = require('express');
-//const https = require('https');
-//const fs = require("fs");
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
@@ -17,10 +15,6 @@ const pool = mysql.createPool({
   password: 'password',
   database: 'favemarx'
 });
-
-// Constants
-const PORT = 8443;
-const HOST = '0.0.0.0';
 
 // Configure passport
 passport.use(new LocalStrategy(
@@ -272,37 +266,4 @@ app.get('/verificationLink/:email', (req, res) => {
   });
 });
 
-// https.createServer({
-//     // key: fs.readFileSync("key.pem"),
-//     // cert: fs.readFileSync("cert.pem"),
-//   },
-//   app
-// ).listen(PORT, () => {
-//     console.log(`Running on https://localhost:${PORT}`);
-// });
-
-// // redirect http to https
-// let http = express();
-
-// http.get('*', (req, res) =>{
-//   res.redirect('https://' + req.headers.host + req.url);
-// });
-
-// http.listen(8080);
-
-require('greenlock-express')
-    .init({
-        packageRoot: __dirname,
-
-        // contact for security and critical bug notices
-        maintainerEmail: "contact@favemarx.com",
-
-        // where to look for configuration
-        configDir: './greenlock.d',
-
-        // whether or not to run at cloudscale
-        cluster: false
-    })
-    // Serves on 80 and 443
-    // Get's SSL certificates magically!
-    .serve(app);
+module.exports = app;
