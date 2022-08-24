@@ -8,10 +8,10 @@ Docker commands to get the service up and running:
 
 Run on localhost:
 
-    docker-compose build favemarx_local favemarx_db
-    docker-compose up -d favemarx_local favemarx_db
+    docker compose --profile local build
+    docker compose --profile local up
 
 Run in production:
 
-    docker-compose build favemarx_prod favemarx_db
-    docker-compose up -d favemarx_prod favemarx_db
+    docker compose --profile prod build
+    docker compose --profile prod up

@@ -10,6 +10,8 @@ services:
     ports:
       - 80:80
       - 443:443
+    profiles:
+      - local
 
   favemarx_prod:
     depends_on:
@@ -20,6 +22,8 @@ services:
     ports:
       - 80:80
       - 443:443
+    profiles:
+      - prod
 
   favemarx_db:
     build:
