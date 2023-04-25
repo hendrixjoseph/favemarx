@@ -25,7 +25,7 @@ export class BookmarksService {
   }
 
   updateWebsite(site: Website): Observable<Website> {
-    return this.httpClient.put<Website>(this.endpoint, site).pipe(this.mapper);;
+    return this.httpClient.put<Website>(`${this.endpoint}/${site.id}`, site).pipe(this.mapper);;
   }
 
   deleteWebsite(site: Website): Observable<Website> {
