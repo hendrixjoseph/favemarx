@@ -1,6 +1,6 @@
 {
   "websites": [
-    {"name": "Google", "url": "https://www.google.com", "date": "2018-03-26"},
-    {"name": "Amazon", "url": "https://www.amazon.com", "date": "2019-12-28"}
+    {"id": 0, "name": "Google", "url": "https://www.google.com", "date": "2018-03-26"},
+    {"id": 1, "name": "Amazon", "url": "https://www.amazon.com", "date": "2019-12-28"}
   ]
 }

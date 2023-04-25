@@ -1,19 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Website } from './website';
 import { BookmarksService } from './bookmarks.service';
-
-type State = 'display' | 'edit' | 'deleted';
-
-class BookmarkRow {
-  state: State = 'display';
-  website: Website;
-  copy: Website;
-
-  constructor(website: Website) {
-    this.website = website;
-    this.copy = structuredClone(website);
-  }
-}
+import { PartialObserver } from 'rxjs';
+import { BookmarkRow, Website } from './bookmark';
 
 @Component({
   selector: 'app-bookmarks',
@@ -28,6 +16,12 @@ export class BookmarksComponent implements OnInit {
 
   columns = ['action', 'site', 'date'];
 
+  a: PartialObserver<Website> = {
+    next: website => {
+
+    }
+  }
+
   constructor(private bookmarksService: BookmarksService) {}
   
   ngOnInit(): void {
@@ -36,6 +30,18 @@ export class BookmarksComponent implements OnInit {
         this.rows = websites.map(site => new BookmarkRow(site));
       }
     })
+  }
+
+  onAdd() {
+    let emptyWebsite: Website = {
+      name: '',
+      url: '',
+      date: new Date()
+    }
+
+    let newRow = new BookmarkRow(emptyWebsite);
+    newRow.state = 'new';
+    this.rows = this.rows.concat(newRow);
   }
 
   onLogout() {
@@ -57,11 +63,29 @@ export class BookmarksComponent implements OnInit {
   saveEditBookmark(row: BookmarkRow) {
     row.copy!.date = new Date();
     row.website = structuredClone(row.copy!);
-    row.state = 'display';
+
+    switch(row.state) {
+      case 'edit':
+        this.bookmarksService.updateWebsite(row.website).subscribe({
+          next: website => row.updateAndDisplay(website)
+        });
+        break;
+      case 'new':
+        this.bookmarksService.addWebsite(row.website).subscribe({
+          next: website => row.updateAndDisplay(website)
+        });
+    }
   }
 
   cancelEditBookmark(row: BookmarkRow) {
-    row.copy = structuredClone(row.website);
-    row.state = 'display';
+    switch(row.state) {
+      case 'edit':
+        row.copy = structuredClone(row.website);
+        row.state = 'display';
+        break;
+      case 'new':
+        this.rows = this.rows.filter(r => r != row);
+        break;
+    }
   }
 }
