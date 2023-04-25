@@ -1,0 +1,3 @@
+<app-login *ngIf="page === 'login'" (login)="onLogin()" (register)="onRegister()"></app-login>
+<app-bookmarks *ngIf="page === 'bookmarks'" (logout)="onLogout()"></app-bookmarks>
+<app-register *ngIf="page === 'register'"></app-register>

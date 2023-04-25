@@ -4,3 +4,8 @@
 /nodejs/aws-creds.json
 /nodejs/package-lock.json
 /nodejs/greenlock.d/config.json.bak
+/.angular/
+/.vscode/
+/node_modules/
+/.editorconfig
+/package-lock.json
