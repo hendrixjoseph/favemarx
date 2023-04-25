@@ -57,7 +57,9 @@ export class BookmarksComponent implements OnInit {
   }
 
   undoDeleteBookmark(row: BookmarkRow) {
-    row.state = 'display';
+    this.bookmarksService.addWebsite(row.website).subscribe({
+      next: website => row.updateAndDisplay(website)
+    });
   }
 
   editBookmark(row: BookmarkRow) {
