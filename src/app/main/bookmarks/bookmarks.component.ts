@@ -49,7 +49,11 @@ export class BookmarksComponent implements OnInit {
   }
 
   deleteBookmark(row: BookmarkRow) {
-    row.state = 'deleted';
+    this.bookmarksService.deleteWebsite(row.website).subscribe({
+      next: () => {
+        row.state = 'deleted';
+      }
+    });
   }
 
   undoDeleteBookmark(row: BookmarkRow) {
