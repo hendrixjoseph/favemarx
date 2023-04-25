@@ -7,17 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'favemarx';
-  page: 'login' | 'register' | 'bookmarks' = 'login';
-
-  onLogin() {
-    this.page = 'bookmarks';
-  }
-
-  onLogout() {
-    this.page = 'login';
-  }
-
-  onRegister() {
-    this.page = 'register';
-  }
 }

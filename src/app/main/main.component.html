@@ -1,0 +1,2 @@
+<app-login *ngIf="!loggedin" (login)="onLogin()"></app-login>
+<app-bookmarks *ngIf="loggedin" (logout)="onLogout()"></app-bookmarks>

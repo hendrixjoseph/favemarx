@@ -4,7 +4,7 @@ import { FormBuilder } from '@angular/forms';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['../main/login/login.component.css']
 })
 export class RegisterComponent {
   form = this.formBuilder.nonNullable.group({

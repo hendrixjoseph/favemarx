@@ -9,7 +9,6 @@ import { FormBuilder } from '@angular/forms';
 export class LoginComponent {
 
   @Output() login = new EventEmitter<void>();
-  @Output() register = new EventEmitter<void>();
 
   form = this.formBuilder.nonNullable.group({
     email: [''],
@@ -17,10 +16,6 @@ export class LoginComponent {
   });
 
   constructor(private formBuilder: FormBuilder) {}
-
-  onRegister() {
-    this.register.emit();
-  }
 
   onSubmit() {
     this.login.emit();

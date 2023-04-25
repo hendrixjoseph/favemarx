@@ -1,19 +1,6 @@
 {
-  "posts": [
-    {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    }
-  ],
-  "comments": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  "websites": [
+    {"name": "Google", "url": "https://www.google.com", "date": "2018-03-26"},
+    {"name": "Amazon", "url": "https://www.amazon.com", "date": "2019-12-28"}
+  ]
 }
