@@ -14,6 +14,7 @@ import {MatTableModule} from '@angular/material/table';
 import { RegisterComponent } from './register/register.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MainComponent } from './main/main.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { MainComponent } from './main/main.component';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSidenavModule,
     MatTableModule,
     ReactiveFormsModule,
     FormsModule,
