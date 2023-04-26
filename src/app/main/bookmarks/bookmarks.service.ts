@@ -25,11 +25,15 @@ export class BookmarksService {
   }
 
   updateWebsite(site: Website): Observable<Website> {
-    return this.httpClient.put<Website>(`${this.endpoint}/${site.id}`, site).pipe(this.mapper);;
+    return this.httpClient.put<Website>(this.endpointWithId(site), site).pipe(this.mapper);;
   }
 
   deleteWebsite(site: Website): Observable<Website> {
-    return this.httpClient.delete<Website>(`${this.endpoint}/${site.id}`);
+    return this.httpClient.delete<Website>(this.endpointWithId(site));
+  }
+
+  private endpointWithId(site: Website) {
+    return `${this.endpoint}/${site.id}`;
   }
 
   private mapDate(site: Website): Website {
