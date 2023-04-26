@@ -16,8 +16,8 @@ export interface Website {
 
 app.get(endpoint, (req, res: Response<Website[]>) => {
   let websites: Website[] = [
-    {id: 0, name: "Google", url: "https://www.google.com", date: new Date()},
-    {id: 1, name: "Amazon", url: "https://www.amazon.com", date: new Date()}
+    {id: 0, name: "Google", url: "https://www.google.com", date: new Date('2018-03-26')},
+    {id: 1, name: "Amazon", url: "https://www.amazon.com", date: new Date('2019-12-28')}
   ];
 
   res.send(websites);

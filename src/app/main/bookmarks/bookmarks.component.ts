@@ -116,7 +116,7 @@ export class BookmarksComponent implements OnInit {
         case 'site':
           return r1.website.name.localeCompare(r2.website.name) * multiplier;
         case 'date':
-          return r1.website.date.getTime() - r2.website.date.getTime() * multiplier;
+          return (r1.website.date.getTime() - r2.website.date.getTime()) * multiplier;
         default:
           return 0;
       }
