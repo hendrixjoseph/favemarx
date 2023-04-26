@@ -1,8 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { BookmarksService } from './bookmarks.service';
-import { PartialObserver } from 'rxjs';
 import { BookmarkRow, Website } from './bookmark';
-import { Validators } from '@angular/forms';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-bookmarks',
@@ -14,14 +13,10 @@ export class BookmarksComponent implements OnInit {
   @Output() logout = new EventEmitter<void>();
 
   rows: BookmarkRow[] = [];
-
+  
   columns = ['action', 'site', 'date'];
 
-  a: PartialObserver<Website> = {
-    next: website => {
 
-    }
-  }
 
   constructor(private bookmarksService: BookmarksService) {}
   
@@ -101,5 +96,30 @@ export class BookmarksComponent implements OnInit {
     const urlInvalid = row.copy.url.length === 0;
     
     return nameInvalid || urlInvalid;
+  }
+
+  sortData(sort: Sort) {
+    console.log(sort);
+
+    let multiplier = 0;
+
+    if (sort.direction === 'asc') {
+      multiplier = 1;
+    } else if (sort.direction === 'desc') {
+      multiplier = -1;
+    } else {
+      return;
+    }
+
+    this.rows = this.rows.sort((r1, r2) => {
+      switch (sort.active) {
+        case 'site':
+          return r1.website.name.localeCompare(r2.website.name) * multiplier;
+        case 'date':
+          return r1.website.date.getTime() - r2.website.date.getTime() * multiplier;
+        default:
+          return 0;
+      }
+    }).slice();
   }
 }

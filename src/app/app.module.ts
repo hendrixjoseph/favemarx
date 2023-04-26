@@ -15,6 +15,7 @@ import { RegisterComponent } from './register/register.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MainComponent } from './main/main.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSortModule} from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     MatFormFieldModule,
     MatInputModule,
     MatSidenavModule,
+    MatSortModule,
     MatTableModule,
     ReactiveFormsModule,
     FormsModule,
