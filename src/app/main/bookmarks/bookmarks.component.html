@@ -11,7 +11,11 @@
       <button mat-raised-button title='edit' [hidden]="row.state !== 'display'" (click)='editBookmark(row)'>
         E
       </button>
-      <button mat-raised-button title='save' [hidden]="!['edit','new'].includes(row.state)" (click)='saveEditBookmark(row)'>
+      <button mat-raised-button
+        title='save'
+        [hidden]="!['edit','new'].includes(row.state)"
+        [disabled]="isRowInvalid(row)"
+        (click)='saveEditBookmark(row)'>
         S
       </button>
       <button mat-raised-button title='cancel' [hidden]="!['edit','new'].includes(row.state)" (click)='cancelEditBookmark(row)'>

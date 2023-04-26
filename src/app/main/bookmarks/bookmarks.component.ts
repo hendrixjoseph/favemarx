@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { BookmarksService } from './bookmarks.service';
 import { PartialObserver } from 'rxjs';
 import { BookmarkRow, Website } from './bookmark';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-bookmarks',
@@ -93,5 +94,12 @@ export class BookmarksComponent implements OnInit {
         this.rows = this.rows.filter(r => r != row);
         break;
     }
+  }
+
+  isRowInvalid(row: BookmarkRow): boolean {
+    const nameInvalid = row.copy.name.length === 0;
+    const urlInvalid = row.copy.url.length === 0;
+    
+    return nameInvalid || urlInvalid;
   }
 }

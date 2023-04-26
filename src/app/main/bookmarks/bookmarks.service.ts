@@ -21,10 +21,14 @@ export class BookmarksService {
   }
 
   addWebsite(site: Website): Observable<Website> {
+    this.ensureUrlHasHttp(site);
+
     return this.httpClient.post<Website>(this.endpoint, site).pipe(this.mapper);
   }
 
   updateWebsite(site: Website): Observable<Website> {
+    this.ensureUrlHasHttp(site);
+
     return this.httpClient.put<Website>(this.endpointWithId(site), site).pipe(this.mapper);;
   }
 
@@ -34,6 +38,12 @@ export class BookmarksService {
 
   private endpointWithId(site: Website) {
     return `${this.endpoint}/${site.id}`;
+  }
+
+  private ensureUrlHasHttp(site: Website) {
+    if (!site.url.startsWith('http')) {
+      site.url = 'https://' + site.url;
+    }
   }
 
   private mapDate(site: Website): Website {
