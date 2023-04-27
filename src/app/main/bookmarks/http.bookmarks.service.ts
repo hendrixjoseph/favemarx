@@ -2,11 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Website } from './bookmark';
+import { BookmarksService } from './bookmarks.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class HttpBookmarksService {
+export class HttpBookmarksService implements BookmarksService {
 
   readonly endpoint = '/websites'
 
