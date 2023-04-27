@@ -16,7 +16,13 @@ export class BookmarksComponent implements OnInit {
   
   columns = ['action', 'site', 'date'];
 
+  set siteFilter(siteFilter: string) {
+    console.log(siteFilter);
 
+    this.rows.forEach(row => {
+      row.hidden = !row.website.name.includes(siteFilter);
+    })
+  }
 
   constructor(private bookmarksService: BookmarksService) {}
   

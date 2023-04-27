@@ -25,7 +25,13 @@
   </ng-container>
 
   <ng-container matColumnDef="site">
-    <th mat-header-cell mat-sort-header="site" *matHeaderCellDef class="site">site</th>
+    <th mat-header-cell  *matHeaderCellDef class="site">
+      <span mat-sort-header="site">site</span>
+      <mat-form-field>
+        <mat-label>name</mat-label>
+        <input matInput type="text" [(ngModel)]="siteFilter" />
+      </mat-form-field>
+    </th>
     <td mat-cell *matCellDef="let row">
        <a [href]="row.website.url" [hidden]="['edit','new'].includes(row.state)">{{row.website.name}}</a>
        <span [hidden]="!['edit','new'].includes(row.state)">
@@ -47,7 +53,7 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="columns"></tr>
-  <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+  <tr mat-row *matRowDef="let row; columns: columns;" [hidden]="row.hidden"></tr>
 </table>
 
 <button mat-raised-button (click)='onAdd()'>Add favemark</button>

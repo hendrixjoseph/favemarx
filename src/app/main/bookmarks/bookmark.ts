@@ -2,6 +2,7 @@ export class BookmarkRow {
   state: BookmarkState = 'display';
   website: Website;
   copy: Website;
+  hidden = false;
 
   constructor(website: Website) {
     this.website = website;
