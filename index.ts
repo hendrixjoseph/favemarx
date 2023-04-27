@@ -1,8 +1,31 @@
 import express, {Request, Response} from 'express';
+import session from 'express-session';
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+
+passport.use(new LocalStrategy(
+  (username, password, done) => {
+    return done(null, {name: username, id: 1});
+  }
+));
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user: Express.User, done) => {
+  done(null, user);
+});
 
 const app = express();
-
 app.use(express.json());
+app.use(session({ 
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 const endpoint = '/websites';
 const endpointWithId = '/websites/:id';
@@ -13,6 +36,17 @@ export interface Website {
   url: string,
   date: Date
 }
+
+app.post('/login', 
+  passport.authenticate('local', {
+    failureRedirect: '/login/failure'
+  }),
+  (req, res) => res.send()
+);
+
+app.get('/login/failure', (req, res) => {
+  res.status(500).send();
+});
 
 app.get(endpoint, (req, res: Response<Website[]>) => {
   let websites: Website[] = [
