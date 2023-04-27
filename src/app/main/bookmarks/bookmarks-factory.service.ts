@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DemoBookmarksService } from './demo.bookmarks.service';
 import { BookmarksService } from './bookmarks.service';
