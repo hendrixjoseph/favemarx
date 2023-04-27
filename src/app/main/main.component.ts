@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BookmarksFactoryService } from './bookmarks/bookmarks-factory.service';
+import { BookmarksFactoryService } from './bookmarks/bookmarks.factory.service';
 
 @Component({
   selector: 'app-main',

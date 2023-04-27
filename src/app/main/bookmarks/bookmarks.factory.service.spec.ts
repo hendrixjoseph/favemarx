@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BookmarksFactoryService } from './bookmarks-factory.service';
+import { BookmarksFactoryService } from './bookmarks.factory.service';
 
 describe('BookmarksFactoryService', () => {
   let service: BookmarksFactoryService;

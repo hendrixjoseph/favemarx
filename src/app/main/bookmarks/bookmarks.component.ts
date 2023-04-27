@@ -2,19 +2,13 @@ import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { BookmarkRow, Website } from './bookmark';
 import { Sort } from '@angular/material/sort';
 import { BookmarksService } from './bookmarks.service';
-import { BookmarksFactoryService } from './bookmarks-factory.service';
+import { BookmarksFactoryService, bookmarksServiceProvider } from './bookmarks.factory.service';
 
 @Component({
   selector: 'app-bookmarks',
   templateUrl: './bookmarks.component.html',
   styleUrls: ['./bookmarks.component.css'],
-  providers: [
-    {
-      provide: 'bookmarksService',
-      useFactory: (factory: BookmarksFactoryService) => factory.getService(),
-      deps: [BookmarksFactoryService]
-    }
-  ]
+  providers: [bookmarksServiceProvider]
 })
 export class BookmarksComponent implements OnInit {
 
@@ -32,7 +26,7 @@ export class BookmarksComponent implements OnInit {
     })
   }
 
-  constructor(@Inject('bookmarksService') private bookmarksService: BookmarksService) {}
+  constructor(@Inject(bookmarksServiceProvider.provide) private bookmarksService: BookmarksService) {}
   
   ngOnInit(): void {
     this.bookmarksService.getWebsites().subscribe({

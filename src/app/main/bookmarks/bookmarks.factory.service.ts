@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, InjectionToken } from '@angular/core';
 import { DemoBookmarksService } from './demo.bookmarks.service';
 import { BookmarksService } from './bookmarks.service';
 import { HttpBookmarksService } from './http.bookmarks.service';
@@ -21,3 +21,9 @@ export class BookmarksFactoryService {
     }
   }
 }
+
+export const bookmarksServiceProvider = {
+  provide: new InjectionToken<BookmarksService>('bookmarksService'),
+  useFactory: (factory: BookmarksFactoryService) => factory.getService(),
+  deps: [BookmarksFactoryService]
+};
