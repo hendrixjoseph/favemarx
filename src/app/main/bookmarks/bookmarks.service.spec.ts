@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BookmarksService } from './bookmarks.service';
+import { BookmarksService } from './http.bookmarks.service';
 
 describe('BookmarksService', () => {
   let service: BookmarksService;

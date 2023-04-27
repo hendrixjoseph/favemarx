@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { BookmarksService } from './bookmarks.service';
+import { HttpBookmarksService } from './http.bookmarks.service';
 import { BookmarkRow, Website } from './bookmark';
 import { Sort } from '@angular/material/sort';
 
@@ -24,7 +24,7 @@ export class BookmarksComponent implements OnInit {
     })
   }
 
-  constructor(private bookmarksService: BookmarksService) {}
+  constructor(private bookmarksService: HttpBookmarksService) {}
   
   ngOnInit(): void {
     this.bookmarksService.getWebsites().subscribe({

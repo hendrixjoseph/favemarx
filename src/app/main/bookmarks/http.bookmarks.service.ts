@@ -6,7 +6,7 @@ import { Website } from './bookmark';
 @Injectable({
   providedIn: 'root'
 })
-export class BookmarksService {
+export class HttpBookmarksService {
 
   readonly endpoint = '/websites'
 
