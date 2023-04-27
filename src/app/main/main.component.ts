@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { BookmarksFactoryService } from './bookmarks/bookmarks-factory.service';
 
 @Component({
   selector: 'app-main',
@@ -8,11 +9,21 @@ import { Component } from '@angular/core';
 export class MainComponent {
   loggedin = false;
 
+  constructor(private bookmarksFactoryService: BookmarksFactoryService) {
+
+  }
+
   onLogin() {
+    this.bookmarksFactoryService.useDemo = false;
     this.loggedin = true;
   }
 
   onLogout() {
     this.loggedin = false;
+  }
+
+  onDemo() {
+    this.bookmarksFactoryService.useDemo = true;
+    this.loggedin = true;
   }
 }

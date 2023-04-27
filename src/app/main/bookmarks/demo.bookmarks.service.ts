@@ -1,7 +1,11 @@
 import { Observable, of } from "rxjs";
 import { BookmarksService } from "./bookmarks.service";
 import { Website } from './bookmark';
+import { Injectable } from "@angular/core";
 
+@Injectable({
+  providedIn: 'root'
+})
 export class DemoBookmarksService implements BookmarksService {
   websites: Website[] = [
     {id: 0, name: "Google", url: "https://www.google.com", date: new Date('2018-03-26')},

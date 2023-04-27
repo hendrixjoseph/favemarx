@@ -4,13 +4,19 @@ import { BookmarkRow, Website } from './bookmark';
 import { Sort } from '@angular/material/sort';
 import { DemoBookmarksService } from './demo.bookmarks.service';
 import { BookmarksService } from './bookmarks.service';
+import { HttpClient } from '@angular/common/http';
+import { BookmarksFactoryService } from './bookmarks-factory.service';
 
 @Component({
   selector: 'app-bookmarks',
   templateUrl: './bookmarks.component.html',
   styleUrls: ['./bookmarks.component.css'],
   providers: [
-    {provide: 'bookmarksService', useClass: DemoBookmarksService}
+    {
+      provide: 'bookmarksService',
+      useFactory: (factory: BookmarksFactoryService) => factory.getService(),
+      deps: [BookmarksFactoryService]
+    }
   ]
 })
 export class BookmarksComponent implements OnInit {
