@@ -45,7 +45,7 @@ app.post('/login',
 );
 
 app.get('/login/failure', (req, res) => {
-  res.status(500).send();
+  res.status(401).send();
 });
 
 app.get(endpoint, (req, res: Response<Website[]>) => {
