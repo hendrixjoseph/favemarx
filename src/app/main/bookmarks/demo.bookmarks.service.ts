@@ -3,7 +3,10 @@ import { BookmarksService } from "./bookmarks.service";
 import { Website } from './bookmark';
 
 export class DemoBookmarksService implements BookmarksService {
-  websites: Website[] = [];
+  websites: Website[] = [
+    {id: 0, name: "Google", url: "https://www.google.com", date: new Date('2018-03-26')},
+    {id: 1, name: "Amazon", url: "https://www.amazon.com", date: new Date('2019-12-28')}
+  ];
 
   addWebsite(site: Website): Observable<Website> {
     site.id = new Date().getTime()

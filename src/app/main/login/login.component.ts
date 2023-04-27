@@ -9,6 +9,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class LoginComponent {
 
   @Output() login = new EventEmitter<void>();
+  @Output() demo = new EventEmitter<void>();
 
   form = this.formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -19,5 +20,9 @@ export class LoginComponent {
 
   onSubmit() {
     this.login.emit();
+  }
+
+  onDemo() {
+    this.demo.emit();
   }
 }
