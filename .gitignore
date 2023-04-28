@@ -5,6 +5,7 @@
 /nodejs/aws-creds.json
 /nodejs/package-lock.json
 /nodejs/greenlock.d/config.json.bak
+/frontend/.angular/
 /.angular/
 /.vscode/
 /node_modules/

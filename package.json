@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.conf.json --open",
+    "start": "cd frontend && ng serve --proxy-config proxy.conf.json --open",
     "backend:dev": "ts-node ./backend/index.ts",
     "backend:mock": "json-server mocked-backend/mocked.live.json --no-cors=true",
     "build": "ng build",
