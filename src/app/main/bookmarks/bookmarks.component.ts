@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { BookmarkRow, Website } from './bookmark';
+import { BookmarkRow } from './bookmark';
 import { Sort } from '@angular/material/sort';
 import { BookmarksService } from './bookmarks.service';
-import { BookmarksFactoryService, bookmarksServiceProvider } from './bookmarks.factory.service';
+import { bookmarksServiceProvider } from './bookmarks.factory.service';
+import { Website } from 'common/website';
 
 @Component({
   selector: 'app-bookmarks',

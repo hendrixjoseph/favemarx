@@ -1,3 +1,5 @@
+import { Website } from "common/website";
+
 export class BookmarkRow {
   state: BookmarkState = 'display';
   website: Website;
@@ -21,10 +23,3 @@ export class BookmarkRow {
 }
 
 type BookmarkState = 'display' | 'edit' | 'new' | 'deleted';
-
-export interface Website {
-  id?: number,
-  name: string,
-  url: string,
-  date: Date
-}

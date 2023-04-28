@@ -1,5 +1,6 @@
+import { Website } from 'common/website';
 import { Observable } from 'rxjs';
-import { Website } from './bookmark';
+
 
 export interface BookmarksService {
   addWebsite(site: Website): Observable<Website>

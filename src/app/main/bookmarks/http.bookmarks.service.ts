@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { Website } from './bookmark';
 import { BookmarksService } from './bookmarks.service';
+import { Website } from 'common/website';
 
 @Injectable({
   providedIn: 'root'

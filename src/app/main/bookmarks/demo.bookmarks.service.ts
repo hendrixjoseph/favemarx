@@ -1,7 +1,7 @@
 import { Observable, of } from "rxjs";
 import { BookmarksService } from "./bookmarks.service";
-import { Website } from './bookmark';
 import { Injectable } from "@angular/core";
+import { Website } from "common/website";
 
 @Injectable({
   providedIn: 'root'

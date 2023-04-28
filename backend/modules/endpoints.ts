@@ -1,5 +1,5 @@
+import { Website } from 'common/website';
 import {Express, Request, RequestHandler, Response} from 'express';
-import { Website } from 'src/app/main/bookmarks/bookmark.js';
 
 const endpoint = '/websites';
 const endpointWithId = '/websites/:id';
