@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json --open",
-    "start:node": "ts-node ./backend/index.ts",
-    "mocked-api": "json-server mocked-api/mocked.live.json --no-cors=true",
+    "backend:dev": "ts-node ./backend/index.ts",
+    "backend:mock": "json-server mocked-backend/mocked.live.json --no-cors=true",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

@@ -10,5 +10,5 @@ createLoginService(app, passport);
 initalizeEndpoints(app);
 
 app.listen(8080, ():void => {
-  console.log(`Server Running here 👉 http://localhost:8080`);
+  console.log(`Server Running here 👉 http://localhost:3000`);
 });

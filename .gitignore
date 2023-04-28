@@ -1,4 +1,4 @@
-/mocked-api/mocked.live.json
+/mocked-backend/mocked.live.json
 /nodejs/node_modules/
 /*.pem
 /*.ppk
