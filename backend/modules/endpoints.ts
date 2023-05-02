@@ -1,5 +1,6 @@
 import { Website } from 'common/website';
 import {Express, Request, RequestHandler, Response} from 'express';
+import { MySqlPool } from './mysql.js';
 
 const endpoint = '/websites';
 const endpointWithId = '/websites/:id';
@@ -7,34 +8,29 @@ const endpointWithId = '/websites/:id';
 const forOhForBlocker: RequestHandler = (req, res, next) => req.user ? next() : res.status(404).send();
 
 export function initalizeEndpoints(app: Express) {
+  const mysqlPool = new MySqlPool();
+
   app.get(endpoint,
     forOhForBlocker, 
-    (req: Request, res: Response<Website[]>) => {
-      let websites: Website[] = [
-        {id: 0, name: "Google", url: "https://www.google.com", date: new Date('2018-03-26')},
-        {id: 1, name: "Amazon", url: "https://www.amazon.com", date: new Date('2019-12-28')}
-      ];
-  
-      res.send(websites);
-  });
+    (req: Request, res: Response<Website[]>) =>
+      mysqlPool.getBookmarks(1, (err, websites) => res.send(websites))
+  );
   
   app.post(endpoint,
     forOhForBlocker,
-    (req: Request<any, any, Website>, res: Response<Website>) => {
-    let website = req.body;
-    website.id = new Date().getTime();
-    res.send(website);
-  });
+    (req: Request<any, any, Website>, res: Response<Website>) =>
+      mysqlPool.addBookmark(1, req.body, (err, result) => res.send(result))
+  );
   
   app.put(endpointWithId,
     forOhForBlocker,
-    (req: Request<{id: string}, any, Website>, res: Response<Website>) => {
-    res.send(req.body);
-  });
+    (req: Request<{id: string}, any, Website>, res: Response<Website>) => 
+      mysqlPool.updateBookmark(1, req.body, (err, result) => res.send(result))
+  );
   
   app.delete(endpointWithId,
     forOhForBlocker,
-    (req, res) => {
-    res.send();
-  });
+    (req: Request<{id: string}, any, Website>, res: Response<boolean>) => 
+      mysqlPool.deleteBookmark(1, Number(req.params.id), (err, result) => res.send(result))
+  );
 }

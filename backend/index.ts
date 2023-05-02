@@ -9,6 +9,6 @@ const app = initalizeExpress(passport);
 createLoginService(app, passport);
 initalizeEndpoints(app);
 
-app.listen(8080, ():void => {
+app.listen(3000, ():void => {
   console.log(`Server Running here 👉 http://localhost:3000`);
 });
