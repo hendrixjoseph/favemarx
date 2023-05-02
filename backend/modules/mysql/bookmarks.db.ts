@@ -1,19 +1,17 @@
 import { Website } from 'common/website';
-import mysql from 'mysql';
+import { MysqlError, Pool } from 'mysql';
 
-type get_function = (error: mysql.MysqlError | null, websites: Website[]) => {};
-type delete_function = (error: mysql.MysqlError | null, result: boolean) => {};
-type add_function = (error: mysql.MysqlError | null, result: Website) => {};
-type update_function = (error: mysql.MysqlError | null, result: Website) => {};
+type get_function = (error: MysqlError | null, websites: Website[]) => void;
+type delete_function = (error: MysqlError | null, result: boolean) => void;
+type add_function = (error: MysqlError | null, result: Website) => void;
+type update_function = (error: MysqlError | null, result: Website) => void;
 
-export class MySqlPool {
-  pool = mysql.createPool({
-    connectionLimit : 100,
-    host: 'localhost',
-    user: 'favemarx_web',
-    password: 'password',
-    database: 'favemarx'
-  });
+export class BookmarksDb {
+  pool: Pool;
+
+  constructor(pool: Pool) {
+    this.pool = pool;
+  }
 
   getBookmarks(user_id: number, result: get_function) {
     this.pool.getConnection((err, connection) => {
