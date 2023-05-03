@@ -9,10 +9,6 @@ export function createLoginService(app: Express, passport: PassportStatic) {
     }
   );
 
-  app.get('/login/failure', (req, res) => {
-    res.status(401).send();
-  });
-
   app.get('/logout',
     (req, res) => {
       req.logOut(err => {

@@ -3,9 +3,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { UserDb } from "./mysql/user.db.js";
 import { getMySqlPool } from "./mysql/mysql.init.js";
 
-export function initializePassport() {
-  const userDb = new UserDb(getMySqlPool());
-
+export function initializePassport(userDb: UserDb) {
   passport.use(new LocalStrategy(
     (email, password, done) => {
       userDb.validateUser(email, password, valid => {
