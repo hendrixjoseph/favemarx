@@ -12,7 +12,7 @@ export function initializePassport() {
         if (valid) {
           done(null, {name: username, id: 1});
         } else {
-          done('error');
+          done(null, false);
         }
       })
     }

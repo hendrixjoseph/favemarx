@@ -1,4 +1,7 @@
-import mysql, { Pool } from 'mysql';
+import { Pool } from 'mysql';
+import bcrypt from 'bcrypt';
+
+const salt = 'favemarx';
 
 type User = {
   id: number,
@@ -21,14 +24,24 @@ export class UserDb {
     this.pool = pool;
   }
 
-  validateUser(username: string, hash: string, validated: (valid: boolean) => void) {
+  validateUser(username: string, password: string, validated: (valid: boolean) => void) {
     this.pool.getConnection((err, connection) => {
       connection.query('SELECT password_hash, verified FROM user WHERE email = ?',
         [username],
         (err2, result: Verification[]) => {
-          validated(result.length === 1 && result[0].verified);
+          if (result.length === 1 && result[0].verified) {
+            this.checkHash(username, password, result[0].password_hash, validated);
+          } else {
+            validated(false);
+          }
         }
       )
+    })
+  }
+
+  private checkHash(username: string, password: string, hash: string, validated: (valid: boolean) => void) {
+    bcrypt.compare(username + password + salt, hash, (err, found) => {
+      validated(found);
     })
   }
 }

@@ -3,10 +3,10 @@ import { PassportStatic } from 'passport';
 
 export function createLoginService(app: Express, passport: PassportStatic) {
   app.post('/login', 
-    passport.authenticate('local', {
-      failureRedirect: '/login/failure'
-    }),
-    (req, res) => res.send()
+    passport.authenticate('local', {}),
+    (req, res) => {
+      res.send()
+    }
   );
 
   app.get('/login/failure', (req, res) => {
