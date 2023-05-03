@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, ValidatorFn, Validators } from '@angular/forms';
+import { RegisterService } from './register.service';
+import { Registration } from 'common/registration';
 
 @Component({
   selector: 'app-register',
@@ -7,9 +9,9 @@ import { FormBuilder, ValidatorFn, Validators } from '@angular/forms';
   styleUrls: ['../main/login/login.component.css']
 })
 export class RegisterComponent {
-  passwordsMatch: ValidatorFn = group => {
-    console.log(group);
+  @Output() registered = new EventEmitter<void>();
 
+  passwordsMatch: ValidatorFn = group => {
     let p1 = group.get('password')?.value;
     let p2 = group.get('passwordAgain')?.value;
 
@@ -24,9 +26,12 @@ export class RegisterComponent {
     validators: this.passwordsMatch
   });
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder,
+              private registerService: RegisterService) {}
 
   onSubmit() {
-
+    this.registerService.register(this.form.value as Registration).subscribe({
+      next: () => this.registered.emit()
+    })
   }
 }
