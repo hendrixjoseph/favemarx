@@ -5,17 +5,16 @@ const salt = 'favemarx';
 
 type User = {
   id: number,
-  email: string,
-  password_hash: string,
-  verified: boolean,
-  registration_date: string,
-  last_login_date: string
+  email: string
 }
 
 type Verification = {
+  id: number,
   password_hash: string,
   verified: boolean
 }
+
+type Validated = (valid: User | false) => void
 
 export class UserDb {
   pool: Pool;
@@ -24,13 +23,13 @@ export class UserDb {
     this.pool = pool;
   }
 
-  validateUser(username: string, password: string, validated: (valid: boolean) => void) {
+  validateUser(email: string, password: string, validated: Validated) {
     this.pool.getConnection((err, connection) => {
-      connection.query('SELECT password_hash, verified FROM user WHERE email = ?',
-        [username],
+      connection.query('SELECT id, password_hash, verified FROM user WHERE email = ?',
+        [email],
         (err2, result: Verification[]) => {
           if (result.length === 1 && result[0].verified) {
-            this.checkHash(username, password, result[0].password_hash, validated);
+            this.checkHash(email, password, result[0], validated);
           } else {
             validated(false);
           }
@@ -39,9 +38,13 @@ export class UserDb {
     })
   }
 
-  private checkHash(username: string, password: string, hash: string, validated: (valid: boolean) => void) {
-    bcrypt.compare(username + password + salt, hash, (err, found) => {
-      validated(found);
+  private checkHash(email: string, password: string, verification: Verification, validated: Validated) {
+    bcrypt.compare(email + password + salt, verification.password_hash, (err, found) => {
+      if (found) {
+        validated({id: verification.id, email: email})
+      } else {
+        validated(false);
+      }
     })
   }
 }

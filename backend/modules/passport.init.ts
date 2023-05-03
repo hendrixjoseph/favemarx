@@ -7,10 +7,10 @@ export function initializePassport() {
   const userDb = new UserDb(getMySqlPool());
 
   passport.use(new LocalStrategy(
-    (username, password, done) => {
-      userDb.validateUser(username, password, valid => {
+    (email, password, done) => {
+      userDb.validateUser(email, password, valid => {
         if (valid) {
-          done(null, {name: username, id: 1});
+          done(null, {name: email, id: valid.id});
         } else {
           done(null, false);
         }
