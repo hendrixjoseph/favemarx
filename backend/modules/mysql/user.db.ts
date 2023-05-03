@@ -4,9 +4,13 @@ import { Registration } from 'common/registration';
 
 const salt = 'favemarx';
 
-type User = {
-  id: number,
-  email: string
+declare global {
+  namespace Express {
+    interface User {
+      id: number,
+      email: string
+    }
+  }
 }
 
 type Verification = {
@@ -15,7 +19,7 @@ type Verification = {
   verified: boolean
 }
 
-type Validated = (valid: User | false) => void
+type Validated = (valid: Express.User | false) => void
 
 export class UserDb {
   pool: Pool;
