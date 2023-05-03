@@ -3,23 +3,23 @@
     <th mat-header-cell *matHeaderCellDef class="action"></th>
     <td mat-cell *matCellDef="let row">
       <button mat-raised-button title='delete'  [hidden]="row.state !== 'display'" (click)='deleteBookmark(row)'>
-        &#10060;
+        🗑️
       </button>
       <button mat-raised-button title='undo' [hidden]="row.state !== 'deleted'" (click)='undoDeleteBookmark(row)'>
         &#x21a9;&#xfe0f;
       </button>
       <button mat-raised-button title='edit' [hidden]="row.state !== 'display'" (click)='editBookmark(row)'>
-        E
+        ✏️
       </button>
       <button mat-raised-button
         title='save'
         [hidden]="!['edit','new'].includes(row.state)"
         [disabled]="isRowInvalid(row)"
         (click)='saveEditBookmark(row)'>
-        S
+        💾
       </button>
       <button mat-raised-button title='cancel' [hidden]="!['edit','new'].includes(row.state)" (click)='cancelEditBookmark(row)'>
-        C
+        ❌
       </button>
     </td>
   </ng-container>
