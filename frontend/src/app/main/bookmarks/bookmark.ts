@@ -7,8 +7,6 @@ export class BookmarkRow {
   
   copy!: Website;
   hidden = false;
-  invalid = false;
-
   constructor(website: Website) {
     this.website = website;
   }
@@ -20,6 +18,10 @@ export class BookmarkRow {
 
   get website() {
     return this._website;
+  }
+
+  get invalid() {
+    return this.copy.name === this.website.name && this.copy.url === this.website.url;
   }
 
   resetCopy() {
