@@ -4,9 +4,10 @@ export class BookmarkRow {
   private _website!: Website;
 
   state: BookmarkState = 'display';
-  
+
   copy!: Website;
   hidden = false;
+
   constructor(website: Website) {
     this.website = website;
   }

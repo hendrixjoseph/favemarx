@@ -12,10 +12,11 @@
         ✏️
       </button>
       <button mat-raised-button
+        [attr.form]="'form-row-' + row.copy.id"
         title='save'
         [hidden]="!['edit','new'].includes(row.state)"
         [disabled]="row.invalid"
-        (click)='saveEditBookmark(row)'>
+        type="submit">
         💾
       </button>
       <button mat-raised-button title='cancel' [hidden]="!['edit','new'].includes(row.state)" (click)='cancelEditBookmark(row)'>
@@ -34,16 +35,19 @@
     </th>
     <td mat-cell *matCellDef="let row">
        <a [href]="row.website.url" [hidden]="['edit','new'].includes(row.state)">{{row.website.name}}</a>
-       <span [hidden]="!['edit','new'].includes(row.state)">
+       <form
+          [id]="'form-row-' + row.copy.id"
+          [hidden]="!['edit','new'].includes(row.state)"
+          (submit)="saveEditBookmark(row)">
         <mat-form-field>
           <mat-label>name</mat-label>
-          <input matInput type="text" [(ngModel)]="row.copy.name" />
+          <input matInput type="text" name="name" [(ngModel)]="row.copy.name" />
         </mat-form-field>
         <mat-form-field>
           <mat-label>url</mat-label>
-          <input matInput type="url" [(ngModel)]="row.copy.url" />
+          <input matInput type="url" name="url" [(ngModel)]="row.copy.url" />
         </mat-form-field>
-      </span>
+      </form>
     </td>
   </ng-container>
 
