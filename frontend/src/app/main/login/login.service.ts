@@ -16,7 +16,7 @@ export class LoginService {
   }
 
   logout() {
-    localStorage.clear();
+    localStorage.setItem('loggedin', 'false');
     this.httpClient.get('/logout').subscribe();
   }
 

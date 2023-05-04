@@ -1,35 +1,47 @@
-import { Observable, of } from "rxjs";
+import { Observable, combineLatest, map, of } from "rxjs";
 import { BookmarksService } from "./bookmarks.service";
-import { Injectable } from "@angular/core";
+import { Injectable, OnInit } from "@angular/core";
 import { Website } from "common/website";
+
+const defaultSites: Website[] = [
+  {name: "Google", url: "https://www.google.com", date: new Date("2018-03-26")},
+  {name: "Amazon", url: "https://www.amazon.com", date: new Date("2019-12-28")}
+];
 
 @Injectable({
   providedIn: 'root'
 })
 export class DemoBookmarksService implements BookmarksService {
-  websites: Website[] = [
-    {id: 0, name: "Google", url: "https://www.google.com", date: new Date('2018-03-26')},
-    {id: 1, name: "Amazon", url: "https://www.amazon.com", date: new Date('2019-12-28')}
-  ];
 
   addWebsite(site: Website): Observable<Website> {
-    site.id = new Date().getTime()
-    this.websites.push(site);
+    const nextId = Math.floor(Date.now() * Math.random());
+    site.id = nextId;
+    localStorage.setItem(site.id.toString(), JSON.stringify(site));
     return of(site);
   }
 
   getWebsites(): Observable<Website[]> {
-    return of(this.websites);
+    const websites: Website[] = Object.values(localStorage)
+      .filter(json => json.includes('{'))
+      .map(json => JSON.parse(json));
+
+    if (websites.length === 0) {
+      return combineLatest(defaultSites.map(site => this.addWebsite(site)));
+    } else {
+      websites.forEach(site => {
+        site.date = new Date(site.date);
+      })
+      return of(websites);
+    }
   }
 
   updateWebsite(site: Website): Observable<Website> {
-    const index = this.websites.findIndex(s => s.id === site.id);
-    this.websites[index] = site;
+    localStorage.setItem(site.id!.toString(), JSON.stringify(site));
     return of(site);
   }
 
   deleteWebsite(site: Website): Observable<Website> {
-    this.websites = this.websites.filter(s => s.id === site.id);
+    localStorage.removeItem(site.id!.toString());
     return of(site);
   }
 }
