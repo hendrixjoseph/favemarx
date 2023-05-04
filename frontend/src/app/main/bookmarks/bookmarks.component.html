@@ -14,7 +14,7 @@
       <button mat-raised-button
         title='save'
         [hidden]="!['edit','new'].includes(row.state)"
-        [disabled]="isRowInvalid(row)"
+        [disabled]="row.invalid"
         (click)='saveEditBookmark(row)'>
         💾
       </button>

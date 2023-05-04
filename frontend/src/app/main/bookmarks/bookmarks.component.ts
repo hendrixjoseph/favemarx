@@ -63,8 +63,10 @@ export class BookmarksComponent implements OnInit {
 
   undoDeleteBookmark(row: BookmarkRow) {
     this.bookmarksService.addWebsite(row.website).subscribe({
-      next: website => row.updateAndDisplay(website)
+      next: website => row.website = website
     });
+
+    row.state = 'display';
   }
 
   editBookmark(row: BookmarkRow) {
@@ -73,25 +75,26 @@ export class BookmarksComponent implements OnInit {
 
   saveEditBookmark(row: BookmarkRow) {
     row.copy!.date = new Date();
-    row.website = structuredClone(row.copy!);
 
     switch(row.state) {
       case 'edit':
-        this.bookmarksService.updateWebsite(row.website).subscribe({
-          next: website => row.updateAndDisplay(website)
+        this.bookmarksService.updateWebsite(row.copy).subscribe({
+          next: website => row.website = website
         });
         break;
       case 'new':
-        this.bookmarksService.addWebsite(row.website).subscribe({
-          next: website => row.updateAndDisplay(website)
+        this.bookmarksService.addWebsite(row.copy).subscribe({
+          next: website => row.website = website
         });
     }
+
+    row.state = 'display';
   }
 
   cancelEditBookmark(row: BookmarkRow) {
     switch(row.state) {
       case 'edit':
-        row.copy = structuredClone(row.website);
+        row.resetCopy();
         row.state = 'display';
         break;
       case 'new':
@@ -100,16 +103,7 @@ export class BookmarksComponent implements OnInit {
     }
   }
 
-  isRowInvalid(row: BookmarkRow): boolean {
-    const nameInvalid = row.copy.name.length === 0;
-    const urlInvalid = row.copy.url.length === 0;
-    
-    return nameInvalid || urlInvalid;
-  }
-
   sortData(sort: Sort) {
-    console.log(sort);
-
     let multiplier = 0;
 
     if (sort.direction === 'asc') {

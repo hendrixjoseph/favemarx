@@ -1,24 +1,29 @@
 import { Website } from "common/website";
 
 export class BookmarkRow {
+  private _website!: Website;
+
   state: BookmarkState = 'display';
-  website: Website;
-  copy: Website;
+  
+  copy!: Website;
   hidden = false;
+  invalid = false;
 
   constructor(website: Website) {
     this.website = website;
+  }
+
+  set website(website: Website) {
+    this._website = website;
     this.copy = structuredClone(website);
   }
 
-  update(website: Website) {
-    this.website = website;
-    this.copy = structuredClone(website);
+  get website() {
+    return this._website;
   }
 
-  updateAndDisplay(website: Website) {
-    this.update(website);
-    this.state = 'display';
+  resetCopy() {
+    this.copy = structuredClone(this.website);
   }
 }
 

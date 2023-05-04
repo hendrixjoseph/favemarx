@@ -32,7 +32,7 @@ export class BookmarksDb extends SuperDb {
     this.query(
       'UPDATE website SET name = ?, url = ? WHERE id = ? AND user_id = ?', 
       [website.name, website.url, website.id!, user_id],
-      result
+      () => result(website)
     );
   }
 
