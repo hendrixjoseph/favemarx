@@ -14,24 +14,24 @@ export function initalizeEndpoints(app: Express) {
   app.get(endpoint,
     forOhForBlocker, 
     (req: Request, res: Response<Website[]>) =>
-      mysqlPool.getBookmarks(req.user!.id, (err, websites) => res.send(websites))
+      mysqlPool.getBookmarks(req.user!.id, websites => res.send(websites))
   );
   
   app.post(endpoint,
     forOhForBlocker,
     (req: Request<any, any, Website>, res: Response<Website>) =>
-      mysqlPool.addBookmark(req.user!.id, req.body, (err, result) => res.send(result))
+      mysqlPool.addBookmark(req.user!.id, req.body, website => res.send(website))
   );
   
   app.put(endpointWithId,
     forOhForBlocker,
     (req: Request<{id: string}, any, Website>, res: Response<Website>) => 
-      mysqlPool.updateBookmark(req.user!.id, req.body, (err, result) => res.send(result))
+      mysqlPool.updateBookmark(req.user!.id, req.body, website => res.send(website))
   );
   
   app.delete(endpointWithId,
     forOhForBlocker,
     (req: Request<{id: string}, any, Website>, res: Response<boolean>) => 
-      mysqlPool.deleteBookmark(req.user!.id, Number(req.params.id), (err, result) => res.send(result))
+      mysqlPool.deleteBookmark(req.user!.id, Number(req.params.id), success => res.send(success))
   );
 }
