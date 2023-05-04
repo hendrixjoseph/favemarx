@@ -1,4 +1,4 @@
-import { Pool } from 'mysql';
+import { Pool, PoolConnection } from 'mysql';
 import bcrypt from 'bcrypt';
 import { Registration } from 'common/registration';
 
@@ -19,7 +19,8 @@ type Verification = {
   verified: boolean
 }
 
-type Validated = (valid: Express.User | false) => void
+type Validated = (valid: Express.User | false) => void;
+type Succeeded = (succeeded: boolean) => void;
 
 export class UserDb {
   pool: Pool;
@@ -28,7 +29,7 @@ export class UserDb {
     this.pool = pool;
   }
 
-  createUser(registration: Registration, success: (succeeded: boolean) => void) {
+  createUser(registration: Registration, success: Succeeded) {
     bcrypt.hash(registration.email + registration.password + salt, 10, (err, hash) => {
       this.pool.getConnection((err, connection) => {
         connection.query(
@@ -37,6 +38,28 @@ export class UserDb {
           (err, result) => success(true)
         );
       });
+    });
+  }
+
+  createVerificationLink(email: string, linkConsumer: (link: false | string) => void) {
+    this.pool.getConnection((err, connection) => {
+      connection.query(
+        'SELECT * FROM user WHERE email = ? AND verified = false',
+        [email],
+        (err, result) => {
+          if (result.length === 1) {
+            let json = JSON.stringify(result[0]);
+            bcrypt.hash(json, 10, function(err, hash) {
+              let encodedEmail = encodeURIComponent(email);
+              let encodedHash = encodeURIComponent(hash);
+              let link = '/verify/' + encodedEmail + '/' + encodedHash;
+              linkConsumer(link)
+            });
+          } else {
+            linkConsumer(false);
+          }
+        }
+      )
     });
   }
 
@@ -53,6 +76,35 @@ export class UserDb {
         }
       )
     })
+  }
+
+  verifyUser(email: string, hash: string, success: Succeeded) {
+    this.pool.getConnection((err, connection) => {
+      connection.query(
+        'SELECT * FROM user WHERE email = ?',
+        [email],
+        (err, result) => {
+          if (result.length === 1) {
+            let json = JSON.stringify(result[0]);
+            bcrypt.compare(json, hash, (err, found) => {
+              if (found) {
+                connection.query(
+                  'UPDATE user SET verified = true WHERE email = ?', 
+                  [email],
+                  (err, result) => {
+                    success(true);
+                  }
+                );
+              } else {
+                success(false);
+              }
+            });
+          } else {
+            success(false);
+          }
+        }
+      );
+    });
   }
 
   private checkHash(email: string, password: string, verification: Verification, validated: Validated) {
