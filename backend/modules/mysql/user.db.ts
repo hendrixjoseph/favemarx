@@ -1,7 +1,7 @@
 import { Pool, PoolConnection, queryCallback } from 'mysql';
 import bcrypt from 'bcrypt';
 import { Registration } from 'common/registration';
-import { SuperDb } from './super.db.js';
+import SuperDb from './super.db.js';
 
 const salt = 'favemarx';
 
@@ -23,7 +23,7 @@ type Verification = {
 type Validated = (valid: Express.User | false) => void;
 type Succeeded = (succeeded: boolean) => void;
 
-export class UserDb extends SuperDb {
+export default class UserDb extends SuperDb {
   constructor(pool: Pool) {
     super(pool);
   }

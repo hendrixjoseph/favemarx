@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { BookmarksService } from './bookmarks.service';
-import { Website } from 'common/website';
+import Website from 'common/website';
 
 @Injectable({
   providedIn: 'root'

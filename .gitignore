@@ -1,7 +1,5 @@
 /mocked-backend/mocked.live.json
 /nodejs/node_modules/
-/*.pem
-/*.ppk
 /nodejs/aws-creds.json
 /nodejs/package-lock.json
 /nodejs/greenlock.d/config.json.bak
@@ -12,3 +10,6 @@
 /.editorconfig
 /package-lock.json
 /dist/
+
+*.pem
+*.ppk

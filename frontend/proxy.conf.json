@@ -1,7 +1,8 @@
 {
   "/": {
-    "target": "http://localhost:3000",
+    "target": "https://localhost:443",
     "secure": false,
     "logLevel": "debug"
-  }
+  },
+  "changeOrigin": true
 }

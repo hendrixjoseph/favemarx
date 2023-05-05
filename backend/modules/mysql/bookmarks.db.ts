@@ -1,13 +1,13 @@
-import { Website } from 'common/website';
-import { MysqlError, Pool } from 'mysql';
-import { SuperDb } from './super.db.js';
+import Website from 'common/website';
+import { Pool } from 'mysql';
+import SuperDb from './super.db.js';
 
 type get_function = (websites: Website[]) => void;
 type delete_function = (result: boolean) => void;
 type add_function = (result: Website) => void;
 type update_function = (result: Website) => void;
 
-export class BookmarksDb extends SuperDb {
+export default class BookmarksDb extends SuperDb {
   constructor(pool: Pool) {
     super(pool);
   }

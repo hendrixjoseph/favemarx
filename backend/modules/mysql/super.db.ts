@@ -1,6 +1,6 @@
 import { Pool, PoolConnection } from "mysql";
 
-export class SuperDb {
+export default class SuperDb {
   private pool: Pool;
 
   constructor(pool: Pool) {

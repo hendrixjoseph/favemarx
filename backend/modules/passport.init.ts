@@ -1,8 +1,8 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from 'passport-local';
-import { UserDb } from "./mysql/user.db.js";
+import UserDb from "./mysql/user.db.js";
 
-export function initializePassport(userDb: UserDb) {
+export default function initializePassport(userDb: UserDb) {
   passport.use(new LocalStrategy(
     (email, password, done) => {
       userDb.validateUser(email, password, valid => {

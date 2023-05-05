@@ -1,4 +1,4 @@
-import { Website } from 'common/website';
+import Website from 'common/website';
 import { Observable } from 'rxjs';
 
 

@@ -1,7 +1,7 @@
 import { Observable, combineLatest, map, of } from "rxjs";
 import { BookmarksService } from "./bookmarks.service";
 import { Injectable, OnInit } from "@angular/core";
-import { Website } from "common/website";
+import Website from "common/website";
 
 const defaultSites: Website[] = [
   {name: "Google", url: "https://www.google.com", date: new Date("2018-03-26")},

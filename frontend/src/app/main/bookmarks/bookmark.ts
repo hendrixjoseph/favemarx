@@ -1,4 +1,4 @@
-import { Website } from "common/website";
+import Website from "common/website";
 
 export class BookmarkRow {
   private _website!: Website;

@@ -24,9 +24,10 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "typeRoots": ["./types", "node_modules/@@types"]
   },
-
+  "exclude": ["types"],
   "ts-node": {
     "esm": true
   },

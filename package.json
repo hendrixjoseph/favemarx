@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "cd frontend && ng serve --proxy-config proxy.conf.json --open",
-    "backend:dev": "ts-node ./backend/index.ts",
+    "backend:dev": "ts-node ./backend/local.ts",
     "backend:mock": "json-server mocked-backend/mocked.live.json --no-cors=true",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
@@ -26,6 +26,7 @@
     "bcrypt": "^5.1.0",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "greenlock-express": "^4.0.3",
     "mysql": "^2.18.1",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",

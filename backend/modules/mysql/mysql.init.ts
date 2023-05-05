@@ -2,7 +2,7 @@ import mysql, { Pool } from 'mysql';
 
 let pool: Pool;
 
-export function getMySqlPool() {
+export default function getMySqlPool() {
   if (pool) {
     return pool;
   } else {

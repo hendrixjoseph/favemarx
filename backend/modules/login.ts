@@ -1,7 +1,7 @@
 import {Express} from 'express';
 import { PassportStatic } from 'passport';
 
-export function createLoginService(app: Express, passport: PassportStatic) {
+export default function createLoginService(app: Express, passport: PassportStatic) {
   app.post('/login', 
     passport.authenticate('local', {}),
     (req, res) => {
