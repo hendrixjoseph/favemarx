@@ -9,6 +9,8 @@ const endpointWithId = '/websites/:id';
 const forOhForBlocker: RequestHandler = (req, res, next) => req.user ? next() : res.status(404).send();
 
 export default function initalizeEndpoints(app: Express) {
+  
+
   const mysqlPool = new BookmarksDb(getMySqlPool());
 
   app.get(endpoint,

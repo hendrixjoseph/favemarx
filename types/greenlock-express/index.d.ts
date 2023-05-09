@@ -1,22 +1,25 @@
 declare module 'greenlock-express' {
   import { Express } from 'express';
 
-  type opts = {
-    packageRoot: string,
-    maintainerEmail: string,
-    configDir: string,
-    cluster: boolean
+  export interface opts {
+      packageRoot: string;
+      maintainerEmail: string;
+      configDir: string;
+      cluster: boolean;
+      workers?: number;
   }
-
-  type serve = {
-    ready: (app?: Express) => serve;
-    master: (app?: Express) => serve;
-    serve: (app: Express) => void;
+  
+  export interface serve {
+      ready: (app?: Express) => serve;
+      master: (app?: Express) => serve;
+      serve: (app: (req: any, res: any) => void) => void;
   }
-
-  const greenlock: {
-    init: (fn: (() => opts) | opts ) => serve;
+  
+  export interface greenlock {
+      init: (o: (opts | (() => opts))) => serve;
   }
-
-  export default greenlock;
+  
+  const gl: greenlock;
+  
+  export default gl;
 }
