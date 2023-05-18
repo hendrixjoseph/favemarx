@@ -20,10 +20,19 @@ export class DemoBookmarksService implements BookmarksService {
     return of(site);
   }
 
+  private parseJsonWithErrorHandling(json: string): Website | undefined {
+    try {
+      return JSON.parse(json);
+    } catch {
+      return undefined;
+    }
+  }
+
   getWebsites(): Observable<Website[]> {
     const websites: Website[] = Object.values(localStorage)
       .filter(json => json.includes('{'))
-      .map(json => JSON.parse(json));
+      .map(json => this.parseJsonWithErrorHandling(json))
+      .filter(json => json && json.name && json.url && json.date) as Website[];
 
     if (websites.length === 0) {
       return combineLatest(defaultSites.map(site => this.addWebsite(site)));

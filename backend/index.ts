@@ -10,9 +10,6 @@ const __parent = path.resolve(__dirname, '../');
 
 const app = getApp();
 
-app.use(express.static('../frontend'));
-app.use(express.static('../common'));
-
 greenlock.init({
   packageRoot: __parent,
   maintainerEmail: "contact@favemarx.com",
