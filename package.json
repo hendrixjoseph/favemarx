@@ -5,9 +5,11 @@
     "ng": "ng",
     "frontend:dev": "cd frontend && ng serve --proxy-config proxy.conf.json --open",
     "frontend:build": "cd frontend && ng build",
+    "frontend:docker:build": "docker build . -f frontend/Dockerfile -t favemarx/frontend",
+    "frontend:docker:run": "docker run -d -p 8080:80 favemarx/frontend",
     "backend:dev": "ts-node ./backend/local.ts",
     "backend:mock": "json-server mocked-backend/mocked.live.json --no-cors=true",
-    "backend:build": "tsc --p ./backend/tsconfig.json",
+    "backend:run": "tsc -p tsconfig.backend.json && node ./dist/backend/local.js",
     "test": "ng test"
   },
   "private": true,

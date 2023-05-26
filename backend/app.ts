@@ -15,7 +15,5 @@ export default function getApp() {
   createRegistrationService(app, userDb);
   initalizeEndpoints(app);
 
-  app.get('/', (req, res) => res.send('hello'));
-
   return app;
 }
