@@ -1,34 +1,30 @@
 version: "3.7"
 
 services:
-  favemarx_local:
+  favemarx_frontend:
     depends_on:
       - favemarx_db
     build:
       context: ./
-      dockerfile: nodejs.local.dockerfile
+      dockerfile: ./frontend/Dockerfile
     ports:
       - 80:80
       - 443:443
-    profiles:
-      - local
 
-  favemarx_prod:
+  favemarx_backend:
     depends_on:
       - favemarx_db
     build:
       context: ./
-      dockerfile: nodejs.prod.dockerfile
+      dockerfile: ./backend/Dockerfile
     ports:
-      - 80:80
-      - 443:443
-    profiles:
-      - prod
+      - 8080:80
+      - 4430:443
 
   favemarx_db:
     build:
       context: ./
-      dockerfile: mysql.dockerfile
+      dockerfile: ./database/mysql.dockerfile
     ports:
       - "3306:3306"
     environment:
