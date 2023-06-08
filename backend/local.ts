@@ -20,20 +20,26 @@ app.get('/verificationLink/:email', (req, res) => {
   });
 })
 
-https.createServer({
-    key: fs.readFileSync("backend/key.pem"),
-    cert: fs.readFileSync("backend/cert.pem"),
-  },
-  app
-).listen(443, () => {
-    console.log(`Running on https://localhost:443`);
+app.get('/hello', (req ,res) => {
+  res.send('hello');
 });
 
-// redirect http to https
-let http = express();
+// https.createServer({
+//     key: fs.readFileSync("backend/key.pem"),
+//     cert: fs.readFileSync("backend/cert.pem"),
+//   },
+//   app
+// ).listen(443, () => {
+//     console.log(`Running on https://localhost:443`);
+// });
 
-http.get('*', (req, res) =>{
-  res.redirect('https://' + req.headers.host + req.url);
-});
+// // redirect http to https
+// let http = express();
 
-http.listen(80);
+// http.get('*', (req, res) =>{
+//   res.redirect('https://' + req.headers.host + req.url);
+// });
+
+// http.listen(80);
+
+app.listen(80);

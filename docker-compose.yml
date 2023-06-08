@@ -10,6 +10,8 @@ services:
     ports:
       - 80:80
       - 443:443
+    networks:
+      - favemarx
 
   favemarx_backend:
     depends_on:
@@ -20,6 +22,8 @@ services:
     ports:
       - 8080:80
       - 4430:443
+    networks:
+      - favemarx
 
   favemarx_db:
     build:
@@ -29,3 +33,11 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: password
+    networks:
+      - favemarx
+
+networks:
+  favemarx:
+
+# docker compose build
+# docker compose up

@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
+EXPOSE 80
+
 CMD [ "npm", "run", "backend:run" ]
 
 # docker build . -f backend/Dockerfile -t favemarx/backend
