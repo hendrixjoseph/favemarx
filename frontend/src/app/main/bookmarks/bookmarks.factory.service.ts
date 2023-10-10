@@ -8,7 +8,7 @@ import { HttpBookmarksService } from './http.bookmarks.service';
 })
 export class BookmarksFactoryService {
 
-  useDemo = false;
+  useDemo = true;
 
   constructor(private localStorageBookmarksService: LocalStorageBookmarksService,
               private httpBookmarksService: HttpBookmarksService) { }
