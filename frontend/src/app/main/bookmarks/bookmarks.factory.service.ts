@@ -1,5 +1,5 @@
 import { Injectable, InjectionToken } from '@angular/core';
-import { DemoBookmarksService } from './demo.bookmarks.service';
+import { LocalStorageBookmarksService } from './localstorage.bookmarks.service';
 import { BookmarksService } from './bookmarks.service';
 import { HttpBookmarksService } from './http.bookmarks.service';
 
@@ -10,12 +10,12 @@ export class BookmarksFactoryService {
 
   useDemo = false;
 
-  constructor(private demoBookmarksService: DemoBookmarksService,
+  constructor(private localStorageBookmarksService: LocalStorageBookmarksService,
               private httpBookmarksService: HttpBookmarksService) { }
 
   getService(): BookmarksService {
     if (this.useDemo) {
-      return this.demoBookmarksService;
+      return this.localStorageBookmarksService;
     } else {
       return this.httpBookmarksService;
     }

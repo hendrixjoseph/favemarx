@@ -11,7 +11,7 @@ const defaultSites: Website[] = [
 @Injectable({
   providedIn: 'root'
 })
-export class DemoBookmarksService implements BookmarksService {
+export class LocalStorageBookmarksService implements BookmarksService {
 
   addWebsite(site: Website): Observable<Website> {
     const nextId = Math.floor(Date.now() * Math.random());
